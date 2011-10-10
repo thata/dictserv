@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+require 'spec_helper'
+
 describe "Lookup dictionary" do
   describe "GET /dictionary/lookup" do
     it "単語を検索できること" do
