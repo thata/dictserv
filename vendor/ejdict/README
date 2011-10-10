@@ -1,0 +1,90 @@
+
+                       ┏━━━━━━━━━━━━━┓
+		       ┃ 英語 ⇔ 日本語通訳ツール ┃ 
+                       ┗━━━━━━━━━━━━━┛
+
+このソフトウエアは Carnegie Mellon 大学の友達からもらったものです。 どこに
+も投稿されていないと思いますけど 間違っているかも知れません。
+
+私には これが非常に便利なものです。 他の人にも便利と思いますので MEINET の
+皆様のために ftp@chorus:~ の下に置いています。
+
+このディレクトリの下のファイルは下記の通りです。
+
+-rw-r--r--  1 root     daemon        643 Dec 12 18:02 README
+-r--r--r--  1 root     daemon    3520247 Dec 12 17:49 ejdic
+-r--r--r--  1 root     daemon     528546 Dec 12 17:49 ejdicindex
+-rw-r--r--  1 root     daemon       9430 Dec 12 17:49 ejutil.el
+-rw-r--r--  1 root     daemon       7373 Dec 12 17:49 ejword.el
+-rwxr-xr-x  1 root     daemon      11186 Dec 12 17:49 word.pl*
+
+インストールする方法は非常に簡単です。
+
+「ejutil.el」
+
+知らん。 使ったことない。 便利だったら僕にも教えてね 8-)
+
+「word.pl」
+
+● /depot/misc/plat/bin/perl の full pathname を最初の #! の行に書いて下さい。
+
+   下の方に ２つのパスも編集しなければなりません。
+● /depot/misc/lib/dict/ejdic を ejdic のインストールする所に
+● /depot/misc/plat/bin/stoe を漢字コード変換プログラムの名前に置き換えて下
+   さい。 nkf -e は大丈夫でしょう。
+
+「ejword.el」
+
+word.pl のインストールする所の参照があります。 編集して下さい。
+
+(defvar ejdic-shell-command-format "exec /depot/misc/lib/dict/word.pl %s"
+
+それで $NEMACS/lisp に置いて M-x byte-compile-file するべきでしょう。 
+$NEMACS/lisp/default.el あるいは ~/.emacs には 私は下記のコードを使っていま
+す。
+
+;
+; 英語 → 日本語通訳ソフト
+;
+(autoload 'ejdic-word "ejword" "ejw" t )
+(autoload 'ejdic-region "ejword" "ejw" t )
+(autoload 'ejdic-point "ejword" "ejw" t )
+(global-set-key "\C-cw"   'ejdic-point)
+
+(setq running-emacs-x
+      (and (boundp 'window-system) (eq window-system 'x))
+      running-emacstool
+      (getenv "IN_EMACSTOOL")
+      running-epoch
+      (and (boundp 'epoch::version) epoch::version)
+      running-epoch-3-2                 ; the latest version of epoch
+      (and running-epoch
+           (let ((epoch-version-number
+                  (substring epoch::version
+                             (string-match "[0-9]" epoch::version))))
+             (equal (string-to-char epoch-version-number) ?3)
+             (equal
+              (string-to-char (substring epoch-version-number 2))
+              ?2))))
+
+ejdict.el の中には 最初のコメントの所で Epoch のための設定もかいてあります。
+更に mouse の左 button を double-click すると point の近くの単語を通訳する
+ためのコードもあります。 私にはこの機能が本当に迷惑になりましたので使ってい
+ません。 （偶然で double-click する時は 面倒）
+
+それで 直接にシェルプロンプトから 訳する為の alias を作りました。 システム
+の標準環境の中に
+
+alias yaku	'/depot/misc/lib/dict/word.pl \!* | less'
+alias trans	'/depot/misc/lib/dict/word.pl \!* | less'
+
+２つを使う理由はこちらのシステムには日本人とが外国人の初心者がいますので 
+8-)
+
+じゃ、それで Nemacs の中に C-c w をすると通訳が出てくるのは使えます。 もっ
+と適当なインストールする方法を作っていないので 済みません。 
+
+夢宇亜 (W. Phillip Moore)				電話: 06-908-1431
+システム管理責任者					 FAX: 06-908-9273
+半導体研究所 		       	    	       Email: moore@mew.mei.co.jp
+	     松下電工(株) 〒５７１大阪府門真市大字門真１０４８
