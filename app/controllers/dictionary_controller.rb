@@ -2,6 +2,7 @@ class DictionaryController < ApplicationController
   layout nil
 
   def lookup
-    render :json => { "hello" => "hello" }
+    dict = Dictionary.new
+    render :json => dict.lookup(params[:word])
   end
 end

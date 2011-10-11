@@ -9,9 +9,12 @@ class Dictionary
       # do nothing
     end
     lastpos = $tbl[se]
+
+    # 辞書ファイルを開く
     dictname = Rails.root.join("vendor", "ejdict", "ejdic")
     dict = open(dictname)
     dict.pos = pos
+
     regex = Regexp.new("^#{ word }")
     result = {}
     while (s = dict.gets)
