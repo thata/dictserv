@@ -17,7 +17,8 @@ class Dictionary
     while (s = dict.gets)
       s = NKF.nkf("-w", s)
       if s =~ regex
-        result[word] = s
+        key, val = s.split("\t", 2)
+        result[key] = val 
       end
       break if dict.pos > lastpos
     end
@@ -25,6 +26,7 @@ class Dictionary
   end
 end
 
+# XXX もうちょっとなんとかしたい
 $tbl = {}
 $tbl["aa"] = 987;
 $tbl["ab"] = 1605;
